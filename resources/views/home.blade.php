@@ -18,21 +18,7 @@
                 <div class="grid w-full grid-cols-3 gap-10">
                     @foreach ($featuredPosts as $post)
                         <div class="col-span-3 md:col-span-1">
-                            <a href="http://127.0.0.1:8000/blog/laravel-34">
-                                <div>
-                                    <img class="w-full rounded-xl"
-                                        src="http://127.0.0.1:8000/storage/3i5uKG05UnvhbORZ3ieDkvtAOL8ss5-metaZXAxNSAoMjIpLnBuZw==-.png">
-                                </div>
-                            </a>
-                            <div class="mt-3">
-                                <div class="flex items-center mb-2">
-                                    <a href="http://127.0.0.1:8000/categories/laravel" class="px-3 py-1 mr-3 text-sm text-white bg-red-600 rounded-xl">
-                                        Laravel
-                                    </a>
-                                    <p class="text-sm text-gray-500">2023-09-05</p>
-                                </div>
-                                <a class="text-xl font-bold text-gray-900">Laravel 10 tutorial feed page #34</a>
-                            </div>
+                            <x-posts.post-card :post="$post" />
                         </div>
                     @endforeach
                 </div>
@@ -45,7 +31,13 @@
 
         <h2 class="mt-16 mb-5 text-3xl font-bold text-yellow-500">Latest Posts</h2>
         <div class="w-full mb-5">
-
+            <div class="grid w-full grid-cols-3 gap-10">
+                @foreach ($latestPosts as $post)
+                    <div class="col-span-3 md:col-span-1">
+                        <x-posts.post-card :post="$post" />
+                    </div>
+                @endforeach
+            </div>
         </div>
         <a class="block mt-10 text-lg font-semibold text-center text-yellow-500"
             href="http://127.0.0.1:8000/blog">More

@@ -14,7 +14,8 @@ class HomeController extends Controller
     {
 
         return view('home', [
-            'featuredPosts' => Post::take(3)->get(),
+            'featuredPosts' => Post::published()->featured()->latest('published_at')->take(3)->get(),
+            'latestPosts' => Post::take(9)->get(),
         ]);
     }
 }
