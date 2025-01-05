@@ -1,19 +1,7 @@
 <x-app-layout>
     <div class="grid w-full grid-cols-4 gap-10">
         <div class="col-span-4 md:col-span-3">
-            <div id="posts" class="px-3 py-6 lg:px-7">
-                <div class="flex items-center justify-between border-b border-gray-100">
-                    <div id="filter-selector" class="flex items-center space-x-4 font-light ">
-                        <button class="py-4 text-gray-500">Latest</button>
-                        <button class="py-4 text-gray-900 border-b border-gray-700">Oldest</button>
-                    </div>
-                </div>
-                <div class="py-4">
-                    @foreach ($posts as $post)
-                        <x-posts.post-item :post="$post" />
-                    @endforeach
-                </div>
-            </div>
+            <livewire:post-list />
         </div>
         <div id="side-bar"
             class="sticky top-0 h-screen col-span-4 px-3 py-6 pt-10 space-y-10 border-t border-gray-100 border-t-gray-100 md:border-t-none md:col-span-1 md:px-6 md:border-l">
