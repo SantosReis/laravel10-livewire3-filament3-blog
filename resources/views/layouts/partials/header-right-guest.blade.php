@@ -1,10 +1,8 @@
 <div class="flex space-x-5">
-    <a class="flex items-center space-x-2 text-sm text-gray-500 hover:text-yellow-500"
-        href="{{ route('login') }}">
-        Login
-    </a>
-    <a class="flex items-center space-x-2 text-sm text-gray-500 hover:text-yellow-500"
-        href="{{ route('register') }}">
-        Register
-    </a>
+    <x-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+        {{ __('Login') }}
+    </x-nav-link>
+    <x-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">
+        {{ __('Register') }}
+    </x-nav-link>
 </div>
