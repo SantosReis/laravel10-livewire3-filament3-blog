@@ -23,11 +23,11 @@
             </h2>
 
             <p class="mt-2 text-base font-light text-gray-700">
-                {{ $post->body }}
+                {{ $post->getExcerpt() }}
             </p>
             <div class="flex items-center justify-between mt-6 article-actions-bar">
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-500">5 min read</span>
+                    <span class="text-sm text-gray-500">{{ $post->getReadingTime() }} min read</span>
                 </div>
                 <div>
                     <a class="flex items-center">
