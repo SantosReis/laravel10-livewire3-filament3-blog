@@ -1,4 +1,6 @@
-<div id="search-box">
+<div x-data="{
+    query: '{{ request('search', '') }}'
+}" id="search-box">
     <div>
         <h3 class="mb-3 text-lg font-semibold text-gray-900">Search</h3>
         <div class="flex items-center px-3 py-2 mb-3 bg-gray-100 w-52 rounded-2xl">
@@ -9,10 +11,10 @@
                 </svg>
             </span>
             <input
-                wire:model="search"
+                x-model="query"
                 class="w-40 ml-1 text-xs text-gray-800 bg-transparent border-none outline-none focus:outline-none focus:border-none focus:ring-0 placeholder:text-gray-400"
                 type="text" placeholder="Search...">
         </div>
-        <x-button wire:click="update">Search</x-button>
+        <x-button x-on:click="$dispatch('search', { search: query })">Search</x-button>
     </div>
 </div>
