@@ -2,16 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PostResource\Pages;
-use App\Filament\Resources\PostResource\RelationManagers;
-use App\Models\Post;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Post;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Forms\Components\DateTimePicker;
+use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PostResource\RelationManagers;
 
 class PostResource extends Resource
 {
@@ -23,21 +32,39 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
-                Forms\Components\TextInput::make('title')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
-                Forms\Components\Textarea::make('body')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('published_at'),
-                Forms\Components\Toggle::make('featured')
-                    ->required(),
+                Section::make('Main Content')->schema(
+                    [
+                        TextInput::make('title')
+                            ->live()
+                            ->required()->minLength(1)->maxLength(150)
+                            ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                if ($operation === 'edit') {
+                                    return;
+                                }
+
+                                $set('slug', Str::slug($state));
+                            }),
+                        TextInput::make('slug')->required()->minLength(1)->unique(ignoreRecord: true)->maxLength(150),
+                        RichEditor::make('body')
+                            ->required()
+                            ->fileAttachmentsDirectory('posts/images')->columnSpanFull()
+                    ]
+                )->columns(2),
+                Section::make('Meta')->schema(
+                    [
+                        FileUpload::make('image')->image()->directory('posts/thumbnails'),
+                        DateTimePicker::make('published_at')->nullable(),
+                        Checkbox::make('featured'),
+                        Select::make('user_id')
+                            ->relationship('author', 'name')
+                            ->searchable()
+                            ->required(),
+                        Select::make('categories')
+                            ->multiple()
+                            ->relationship('categories', 'title')
+                            ->searchable(),
+                    ]
+                ),
             ]);
     }
 
@@ -45,19 +72,13 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('user_id')->numeric()->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('featured')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('title')->searchable(),
+                Tables\Columns\TextColumn::make('slug')->searchable(),
+                Tables\Columns\TextColumn::make('published_at')->dateTime()->sortable(),
+                // Tables\Columns\IconColumn::make('featured')->boolean(),
+                CheckboxColumn::make('featured'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
