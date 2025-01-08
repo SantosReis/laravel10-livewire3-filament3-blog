@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
@@ -57,5 +58,12 @@ class Post extends Model
         $mins = round(str_word_count($this->body) / 250);
 
         return ($mins < 1) ? 1 : $mins;
+    }
+
+    public function getThumbnailUrl()
+    {
+        $isUrl = str_contains($this->image, 'http');
+
+        return ($isUrl) ? $this->image : Storage::disk('public')->url($this->image);
     }
 }

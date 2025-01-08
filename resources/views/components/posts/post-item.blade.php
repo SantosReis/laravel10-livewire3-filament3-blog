@@ -4,7 +4,7 @@
         <div class="flex items-center col-span-4 article-thumbnail">
             <a href="" >
                 <img class="mx-auto mw-100 rounded-xl"
-                    src="{{ $post->image }}"
+                    src="{{ $post->getThumbnailUrl() }}"
                     alt="thumbnail">
             </a>
         </div>
