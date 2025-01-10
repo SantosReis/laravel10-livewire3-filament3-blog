@@ -29,4 +29,5 @@
 @endphp
 
 {{-- <a href="#" class="text-[{{$textColor}}] bg-[{{$bgColor}}] px-3 py-1 text-base rounded-xl">{{ $slot }}</a> --}}
-<a href="#" class="{{ $textColor }} {{ $bgColor }} px-3 py-1 text-base rounded-xl">{{ $slot }}</a>
+{{-- <a href="#" class="{{ $textColor }} {{ $bgColor }} px-3 py-1 text-base rounded-xl">{{ $slot }}</a> --}}
+<a {{ $attributes }} class="{{ $textColor }} {{ $bgColor }} px-3 py-1 text-base rounded-xl">{{ $slot }}</a>
