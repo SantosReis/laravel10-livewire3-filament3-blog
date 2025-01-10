@@ -1,6 +1,9 @@
 <div class="px-3 py-6 lg:px-7">
     <div class="flex items-center justify-between border-b border-gray-100">
         <div class="text-gray-600">
+            @if ($this->activeCategory || $search)
+                <button class="mr-3 text-xs gray-500" wire:click="clearFilters()">X</button>
+            @endif
             @if ($this->activeCategory)
                 All Posts From :
                 <x-badge
