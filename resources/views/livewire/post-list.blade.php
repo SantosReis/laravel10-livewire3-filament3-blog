@@ -1,9 +1,18 @@
 <div class="px-3 py-6 lg:px-7">
     <div class="flex items-center justify-between border-b border-gray-100">
         <div class="text-gray-600">
+            @if ($this->activeCategory)
+                All Posts From :
+                <x-badge
+                    wire:navigate href="{{ route('posts.index', ['category' => $this->activeCategory->slug ]) }}"
+                    :textColor="$this->activeCategory->text_color"
+                    :bgColor="$this->activeCategory->bg_color">
+                    {{ $this->activeCategory->title }}
+                </x-badge>
+            @endif
             @if ($search)
                 <span class="ml-2">
-                    Searching : <strong>{{ $search }}</strong>
+                    Containing : <strong>{{ $search }}</strong>
                 </span>
             @endif
         </div>

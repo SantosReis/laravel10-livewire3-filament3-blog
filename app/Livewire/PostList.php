@@ -39,7 +39,10 @@ class PostList extends Component
     public function posts(){
         return Post::published()
             // ->with('author', 'categories')
-            ->when(Category::where('slug', $this->category)->first(), function ($query) {
+            // ->when(Category::where('slug', $this->category)->first(), function ($query) {
+            //     $query->withCategory($this->category);
+            // })
+            ->when($this->activeCategory, function ($query) {
                 $query->withCategory($this->category);
             })
             ->orderBy('published_at', $this->sort)
@@ -47,6 +50,16 @@ class PostList extends Component
             // ->search($this->search)
             ->paginate(3);
         // return Post::published()->orderBy('published_at', 'desc')->simplePaginate(3);
+    }
+
+    #[Computed()]
+    public function activeCategory()
+    {
+        if ($this->category === null || $this->category === '') {
+            return null;
+        }
+
+        return Category::where('slug', $this->category)->first();
     }
 
     public function render()
