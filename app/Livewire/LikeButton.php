@@ -4,10 +4,12 @@ namespace App\Livewire;
 
 use App\Models\Post;
 use Livewire\Component;
+use Livewire\Attributes\Reactive;
 
 class LikeButton extends Component
 {
 
+    #[Reactive]
     public Post $post;
 
     public function toggleLike()
