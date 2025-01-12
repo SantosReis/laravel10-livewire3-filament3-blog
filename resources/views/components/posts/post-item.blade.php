@@ -10,10 +10,7 @@
         </div>
         <div class="col-span-8">
             <div class="flex items-center py-1 text-sm article-meta">
-                <img class="mr-3 rounded-full w-7 h-7"
-                    src="{{ $post->author->profile_photo_url }}"
-                    alt="{{ $post->author->name }}">
-                <span class="mr-1 text-xs">{{ $post->author->name }}</span>
+                <x-posts.author :author="$post->author" size="xs" />
                 <span class="text-xs text-gray-500">. {{ $post->published_at->diffForHumans() }}</span>
             </div>
             <h2 class="text-xl font-bold text-gray-900">

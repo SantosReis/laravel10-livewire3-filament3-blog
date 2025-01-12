@@ -5,10 +5,8 @@
             {{ $post->title }}
         </h1>
         <div class="flex items-center justify-between mt-2">
-            <div class="flex items-center py-5 text-base">
-                <img class="w-10 h-10 mr-3 rounded-full" src=""
-                    alt="avatar">
-                <span class="mr-1">MN</span>
+            <div class="flex items-center py-5">
+                <x-posts.author :author="$post->author" size="md" />
                 <span class="text-sm text-gray-500">| {{ $post->getReadingTime() }} min read</span>
             </div>
             <div class="flex items-center">
