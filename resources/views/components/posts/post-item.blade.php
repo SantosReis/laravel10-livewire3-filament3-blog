@@ -28,8 +28,7 @@
             <div class="flex items-center justify-between mt-6 article-actions-bar">
                 <div class="flex gap-x-2">
                     @foreach ($post->categories as $category)
-                        {{-- <x-badge textColor="red" bgColor="red">{{ $category->title }}</x-badge> --}}
-                        <x-badge wire:navigate href="{{ route('posts.index', ['category' => $category->slug ]) }}" :textColor="$category->text_color" :bgColor="$category->bg_color">{{ $category->title }}</x-badge>
+                        <x-posts.category-badge :category="$category" />
                     @endforeach
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-500">{{ $post->getReadingTime() }} min read</span>
