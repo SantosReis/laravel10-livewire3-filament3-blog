@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use App\Filament\Resources\UserResource\Widgets\UserStatsWidget;
 use App\Filament\Resources\PostResource\Widgets\PostsPerMonthChart;
+use App\Filament\Resources\CommentResource\Widgets\LatestCommentsWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -43,6 +44,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
                 UserStatsWidget::class,
                 PostsPerMonthChart::class,
+                LatestCommentsWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
