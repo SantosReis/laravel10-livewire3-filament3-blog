@@ -48,7 +48,7 @@ class PostList extends Component
     #[Computed()]
     public function posts(){
         return Post::published()
-            // ->with('author', 'categories')
+            ->with('author', 'categories')
             // ->when(Category::where('slug', $this->category)->first(), function ($query) {
             //     $query->withCategory($this->category);
             // })
