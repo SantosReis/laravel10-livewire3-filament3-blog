@@ -77,6 +77,7 @@ class UserResource extends Resource
                 //     ->dateTime()
                 //     ->sortable(),
                 Tables\Columns\TextColumn::make('role')
+                    ->sortable()
                     ->searchable(),
             ])
             ->filters([
