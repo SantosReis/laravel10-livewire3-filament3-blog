@@ -32,9 +32,9 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
-                // Forms\Components\TextInput::make('password')
-                //     ->password()
-                //     ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required(),
                 // Forms\Components\TextInput::make('current_team_id')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('profile_photo_path'),

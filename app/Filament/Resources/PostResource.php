@@ -98,6 +98,12 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('view')
+                    ->label('View')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->url(fn ($record) => url('/blog/' . $record->slug))
+                    ->openUrlInNewTab()
+                    ->visible(fn ($record) => $record->published_at !== null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
