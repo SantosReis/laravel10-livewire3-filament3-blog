@@ -18,14 +18,14 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="antialiased font-light">
+    <body class="antialiased font-light bg-scroll bg-left-top bg-repeat" style="background-image: url('{{ asset('images/wood.png') }}')">
         <x-banner />
 
         @include('layouts.partials.header')
 
         @yield('hero')
 
-        <main class="container flex flex-grow px-5 mx-auto">
+        <main class="container flex flex-grow px-5 m-10 mx-auto">
             {{ $slot }}
         </main>
 
