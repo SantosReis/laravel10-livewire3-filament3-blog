@@ -3,5 +3,46 @@
 @tailwind utilities;
 
 [x-cloak] {
-    display: none;
+  display: none;
+}
+
+.grid-sizer {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .grid-sizer {
+    width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .grid-sizer {
+    width: 33.3333%;
+  }
+}
+@media (min-width: 1024px) {
+  .grid-sizer {
+    width: 25%;
+  }
+}
+
+/* Also force .grid-item to match sizing */
+.grid-item {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .grid-item {
+    width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .grid-item {
+    width: 33.3333%;
+  }
+}
+@media (min-width: 1024px) {
+  .grid-item {
+    width: 25%;
+  }
 }

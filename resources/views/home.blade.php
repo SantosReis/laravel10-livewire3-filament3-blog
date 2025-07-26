@@ -24,13 +24,43 @@
         <hr> --}}
 
         {{-- <h2 class="px-5 py-3 mb-5 text-3xl font-bold text-gray-700 bg-white py-3mt-16">{{ __('home.latest_posts') }}</h2> --}}
-        <div class="w-full mb-5 text-center">
+        {{-- <div class="w-full mb-5 text-center">
             <div class="grid w-full grid-cols-3 gap-10">
                 @foreach ($latestPosts as $post)
                     <x-posts.post-card :post="$post" class="col-span-3 md:col-span-1" />
                 @endforeach
             </div>
             <a class="inline-block px-3 py-2 mt-5 text-lg text-white bg-gray-600 rounded" href="{{ route('posts.index') }}">{{ __('home.more_posts') }}</a>
+        </div> --}}
+
+
+
+
+        <div class="w-full mb-5 text-center">
+            <div
+                class="max-w-screen-xl mx-auto"
+                x-data
+                x-init="
+                    new Masonry($refs.grid, {
+                        itemSelector: '.grid-item',
+                        columnWidth: '.grid-sizer',
+                        percentPosition: true
+                    })
+                "
+                x-ref="grid"
+            >
+                <!-- Grid sizer (used by Masonry to define column width) -->
+                <div class="w-full grid-sizer sm:w-1/2 md:w-1/3 lg:w-1/4"></div>
+
+                @foreach ($latestPosts as $post)
+                    <!-- Ensure grid-item class is applied -->
+                    <x-posts.post-card :post="$post" class="px-2 mb-4 grid-item" />
+                @endforeach
+            </div>
+
+            <a class="inline-block px-3 py-2 mt-5 text-lg text-white bg-gray-600 rounded" href="{{ route('posts.index') }}">
+                {{ __('home.more_posts') }}
+            </a>
         </div>
     </div>
 </x-app-layout>
