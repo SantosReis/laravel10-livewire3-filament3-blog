@@ -28,10 +28,15 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        $nextPost = Post::where('id', '>', $post->id)->orderBy('id')->first();
+        $previousPost = Post::where('id', '<', $post->id)->orderByDesc('id')->first();
+
         return view(
             'posts.show',
             [
-                'post' => $post
+                'post' => $post,
+                'nextPost' => $nextPost,
+                'previousPost' => $previousPost,
             ]
         );
     }

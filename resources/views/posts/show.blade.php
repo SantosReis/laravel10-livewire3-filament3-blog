@@ -7,6 +7,19 @@
                 <x-posts.category-badge :category="$category" />
             @endif
         </div>
+        <div class="flex justify-between mt-6">
+
+            @if ($previousPost)
+                <a href="{{ route('posts.show', $previousPost->slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">←</a>
+            @else
+                <span></span>
+            @endif
+
+            @if ($nextPost)
+                <a href="{{ route('posts.show', $nextPost->slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">→</a>
+            @endif
+        </div>
+
         <div class="px-10 pt-10 pb-16">
             <h1 class="text-4xl font-medium text-left text-gray-800">
                 {{ $post->title }}
