@@ -21,16 +21,16 @@ class HomeController extends Controller
 
         // dd($featuredPosts);
 
-        $latestPosts = Cache::remember('latestPosts', now()->addDay(), function () {
-            // return Post::published()->with('categories')->latest('published_at')->take(9)->get();
-            return Post::get();
-        });
+        // $latestPosts = Cache::remember('latestPosts', now()->addDay(), function () {
+        //     // return Post::published()->with('categories')->latest('published_at')->take(9)->get();
+        //     return Post::get();
+        // });
 
         // dd($latestPosts);
 
         return view('home', [
             'featuredPosts' => $featuredPosts,
-            'latestPosts' => $latestPosts
+            // 'latestPosts' => $latestPosts
         ]);
     }
 }

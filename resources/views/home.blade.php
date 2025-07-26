@@ -33,34 +33,9 @@
             <a class="inline-block px-3 py-2 mt-5 text-lg text-white bg-gray-600 rounded" href="{{ route('posts.index') }}">{{ __('home.more_posts') }}</a>
         </div> --}}
 
-
-
-
         <div class="w-full mb-5 text-center">
-            <div
-                class="max-w-screen-xl mx-auto"
-                x-data
-                x-init="
-                    new Masonry($refs.grid, {
-                        itemSelector: '.grid-item',
-                        columnWidth: '.grid-sizer',
-                        percentPosition: true
-                    })
-                "
-                x-ref="grid"
-            >
-                <!-- Grid sizer (used by Masonry to define column width) -->
-                <div class="w-full grid-sizer sm:w-1/2 md:w-1/3 lg:w-1/4"></div>
-
-                @foreach ($latestPosts as $post)
-                    <!-- Ensure grid-item class is applied -->
-                    <x-posts.post-card :post="$post" class="px-1 mb-4 grid-item shadow-custom" />
-                @endforeach
-            </div>
-
-            <a class="inline-block px-3 py-2 mt-5 text-lg text-white bg-gray-600 rounded" href="{{ route('posts.index') }}">
-                {{ __('home.more_posts') }}
-            </a>
+           <livewire:latest-posts />
         </div>
+
     </div>
 </x-app-layout>
