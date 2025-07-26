@@ -1,16 +1,22 @@
-<div>
+<div class="w-full text-center">
     <div
-        class="max-w-screen-xl mx-auto"
         x-data
         x-init="
-            new Masonry($refs.grid, {
+            const masonry = new Masonry($refs.grid, {
                 itemSelector: '.grid-item',
                 columnWidth: '.grid-sizer',
                 percentPosition: true
-            })
+            });
+
+            Livewire.hook('message.processed', () => {
+                masonry.reloadItems();
+                masonry.layout();
+            });
         "
         x-ref="grid"
+        class="max-w-screen-xl mx-auto"
     >
+        <!-- Grid sizer (used by Masonry to define column width) -->
         <div class="w-full grid-sizer sm:w-1/2 md:w-1/3 lg:w-1/4"></div>
 
         @foreach ($posts as $post)
@@ -18,14 +24,15 @@
         @endforeach
     </div>
 
+    <!-- Load More button -->
     @if ($posts->hasMorePages())
         <div class="mt-6 text-center">
             <button
-                wire:click="nextPage"
+                wire:click="loadMore"
                 wire:loading.attr="disabled"
                 class="px-4 py-2 text-white bg-gray-700 rounded hover:bg-gray-800"
             >
-                {{ __('home.more_posts') }}
+                Load More
             </button>
         </div>
     @endif

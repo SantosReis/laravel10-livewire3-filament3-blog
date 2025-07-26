@@ -2,15 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Post;
 
 class LatestPosts extends Component
 {
     use WithPagination;
 
+    public $perPage = 9;
+
     protected $paginationTheme = 'tailwind';
+
+    public function loadMore()
+    {
+        $this->perPage += 9;
+    }
 
     public function render()
     {
@@ -18,7 +25,7 @@ class LatestPosts extends Component
             'posts' => Post::published()
                 ->with('categories')
                 ->latest('published_at')
-                ->paginate(2)
+                ->paginate($this->perPage),
         ]);
     }
 }
