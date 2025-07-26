@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,6 +28,19 @@ class Post extends Model
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+    static::saved(function () {
+        Cache::forget('featuredPosts');
+        Cache::forget('latestPosts');
+    });
+
+    static::deleted(function () {
+        Cache::forget('featuredPosts');
+        Cache::forget('latestPosts');
+    });
+}
 
     public function author()
     {

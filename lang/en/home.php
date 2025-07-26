@@ -9,7 +9,7 @@ return [
 
     'hero' => [
         'title' => 'Welcome to',
-        'desc' => 'Best Blog in the universe',
+        'desc' => 'Um itinerário anacrônico da história',
         'cta' => 'Start Reading'
     ]
 ];
