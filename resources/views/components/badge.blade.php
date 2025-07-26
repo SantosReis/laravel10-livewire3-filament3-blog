@@ -16,7 +16,7 @@
     };
 
     $bgColor = match ($bgColor) {
-        'black' => 'bg-gray-700',
+        'black' => 'bg-gray-950',
         'gray' => 'bg-gray-100',
         'blue' => 'bg-blue-100',
         'red' => 'bg-red-100',
@@ -32,4 +32,4 @@
 
 {{-- <a href="#" class="text-[{{$textColor}}] bg-[{{$bgColor}}] px-3 py-1 text-base rounded-xl">{{ $slot }}</a> --}}
 {{-- <a href="#" class="{{ $textColor }} {{ $bgColor }} px-3 py-1 text-base rounded-xl">{{ $slot }}</a> --}}
-<a {{ $attributes }} class="{{ $textColor }} {{ $bgColor }} px-3 py-1 text-base">{{ $slot }}</a>
+<a {{ $attributes }} class="{{ $textColor }} {{ $bgColor }} px-6 py-2 text-[13px] font-medium opacity-80 uppercase italic">{{ $slot }}</a>

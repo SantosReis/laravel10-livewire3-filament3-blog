@@ -54,7 +54,7 @@
 
                 @foreach ($latestPosts as $post)
                     <!-- Ensure grid-item class is applied -->
-                    <x-posts.post-card :post="$post" class="px-2 mb-4 grid-item" />
+                    <x-posts.post-card :post="$post" class="px-1 mb-4 grid-item shadow-custom" />
                 @endforeach
             </div>
 

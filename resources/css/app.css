@@ -46,3 +46,9 @@
     width: 25%;
   }
 }
+
+@layer utilities {
+  .shadow-custom {
+    box-shadow: 0 4px 15px -5px #555;
+  }
+}
