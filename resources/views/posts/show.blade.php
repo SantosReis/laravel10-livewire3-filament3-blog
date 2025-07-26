@@ -1,8 +1,14 @@
 <x-app-layout :title="$post->title">
-    <article class="w-full col-span-4 mx-auto mt-10 bg-white md:col-span-3" style="max-width:700px">
+    <article class="w-full col-span-4 mx-auto mt-10 bg-white md:col-span-3 shadow-custom" style="max-width:700px">
         <img class="w-full" src="{{ $post->getThumbnailUrl() }}" alt="thumbnail">
-        <div class="p-5">
-            <h1 class="text-4xl font-bold text-left text-gray-800">
+
+        <div class="absolute -mt-7">
+            @if ($category = $post->categories->first())
+                <x-posts.category-badge :category="$category" />
+            @endif
+        </div>
+        <div class="px-10 pt-10 pb-16">
+            <h1 class="text-4xl font-medium text-left text-gray-800">
                 {{ $post->title }}
             </h1>
             <div class="flex items-center justify-between mt-2">
@@ -31,17 +37,17 @@
                 </div>
             </div>
 
-            <div class="py-3 text-lg prose text-justify text-gray-800 article-content">
+            <div class="py-3 text-[13px] prose max-w-none text-left text-gray-950 article-content font-medium">
                 {!! $post->body !!}
             </div>
 
-            <div class="flex items-center mt-10 space-x-4">
+            {{-- <div class="flex items-center mt-10 space-x-4">
                 @foreach ($post->categories as $category)
                     <x-posts.category-badge :category="$category" />
                 @endforeach
-            </div>
+            </div> --}}
 
-            <livewire:post-comments :key="'comments' . $post->id" :$post />
+            {{-- <livewire:post-comments :key="'comments' . $post->id" :$post /> --}}
         </div>
     </article>
 </x-app-layout>
