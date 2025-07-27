@@ -39,6 +39,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
 
+        //Spatie translatable
         parent::boot();
 
         Route::bind('post', function ($value) {

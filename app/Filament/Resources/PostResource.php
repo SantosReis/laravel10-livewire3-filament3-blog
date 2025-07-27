@@ -144,7 +144,7 @@ class PostResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    // ->url(fn ($record) => url('/blog/' . $record->slug))
+                    ->url(fn ($record) => url('/blog/' . $record->localized_slug))
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => $record->published_at !== null),
             ])

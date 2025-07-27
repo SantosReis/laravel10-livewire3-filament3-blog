@@ -12,17 +12,16 @@ return new class extends Migration
     public function up(): void
     {
 
-        // DB::statement("UPDATE posts SET slug = JSON_OBJECT() WHERE slug IS NULL OR slug = '' OR JSON_VALID(slug) = 0");
-        // DB::statement("UPDATE posts SET title = JSON_OBJECT() WHERE title IS NULL OR title = '' OR JSON_VALID(title) = 0");
-        // DB::statement("UPDATE posts SET body = JSON_OBJECT() WHERE body IS NULL OR body = '' OR JSON_VALID(body) = 0");
+        info('⚠️ Dropping unique index on "slug" column.');
+        echo "\n⚠️ Dropping unique index on 'slug' column...\n";
 
         Schema::table('posts', function (Blueprint $table) {
-            // $table->dropUnique(['slug']); // Drop unique index first
-            // $table->dropUnique(['posts_slug_unique']);
-            // $table->dropUnique('posts_slug_unique');
-            // $table->dropUnique('slug');
-            // $table->dropUnique('posts_slug_unique');
+            $table->dropUnique('posts_slug_unique');
+
         });
+
+        info('🔁 Changing title, slug, and body to JSON type.');
+        echo "🔁 Changing title, slug, and body columns to JSON type...\n";
 
         Schema::table('posts', function (Blueprint $table) {
 
@@ -38,19 +37,17 @@ return new class extends Migration
     public function down(): void
     {
 
-        // Convert JSON back to plain strings (e.g., 'en' field only)
-        // DB::statement("UPDATE posts SET title = JSON_UNQUOTE(JSON_EXTRACT(title, '$.en')) WHERE JSON_VALID(title)");
-        // DB::statement("UPDATE posts SET slug = JSON_UNQUOTE(JSON_EXTRACT(slug, '$.en')) WHERE JSON_VALID(slug)");
-        // DB::statement("UPDATE posts SET body = JSON_UNQUOTE(JSON_EXTRACT(body, '$.en')) WHERE JSON_VALID(body)");
+        echo "\n⏪ Reverting JSON columns and re-adding slug column...\n";
 
-        Schema::table('posts', function (Blueprint $table) {
+         Schema::table('posts', function (Blueprint $table) {
             $table->string('title', 255)->change();
-            $table->string('slug', 255)->change();
             $table->text('body')->change();
+            $table->dropColumn('slug');
         });
 
-        // Schema::table('posts', function (Blueprint $table) {
-        //     $table->string('slug')->unique();
-        // });
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('slug')->unique()->after('title');
+        });
+
     }
 };
