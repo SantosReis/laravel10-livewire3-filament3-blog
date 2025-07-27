@@ -101,12 +101,30 @@ return [
     'supported_locales' => [
         'en' => [
             'name' => 'English',
-            'icon' => 'us'
+            'emoji' => '🇬🇧',
+            'icon' => 'gb',
+        ],
+        'pt' => [
+            'name' => 'Português',
+            'emoji' => '🇵🇹',
+            'icon' => 'pt',
         ],
         'fr' => [
-            'name' => 'French',
-            'icon' => 'fr'
+            'name' => 'Français',
+            'emoji' => '🇫🇷',
+            'icon' => 'fr',
         ],
+        'de' => [
+            'name' => 'Deutsch',
+            'emoji' => '🇩🇪',
+            'icon' => 'de',
+        ],
+
+
+        // 'en' => ['name' => 'English', 'icon' => 'us'],
+        // 'pt' => ['name' => 'Português', 'icon' => 'pt'],
+        // 'fr' => ['name' => 'Français', 'icon' => 'fr'],
+        // 'de' => ['name' => 'Deutsch', 'icon' => 'de'],
     ],
 
     /*

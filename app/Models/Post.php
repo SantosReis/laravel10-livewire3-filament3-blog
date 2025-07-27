@@ -7,13 +7,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
 
     protected $fillable = [
         'user_id',
@@ -26,6 +26,9 @@ class Post extends Model
     ];
 
     protected $casts = [
+        'title' => 'array',
+        'slug' => 'array',
+        'body' => 'array',
         'published_at' => 'datetime',
     ];
 
@@ -64,7 +67,7 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        $query->where('published_at', '<=', Carbon::now());
+        $query->where('published_at', '>=', Carbon::now());
     }
 
     public function scopeWithCategory($query, string $category)
@@ -90,14 +93,16 @@ class Post extends Model
         $query->where('title', 'like', "%{$search}%");
     }
 
-    public function getExcerpt()
+    public function getExcerpt(): string
     {
-        return Str::limit(strip_tags($this->body), 150);
+        $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
+        return Str::limit(strip_tags($body), 250);
     }
 
-    public function getReadingTime()
+    public function getReadingTime(): int
     {
-        $mins = round(str_word_count($this->body) / 250);
+        $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
+        $mins = round(str_word_count(strip_tags($body)) / 250);
 
         return ($mins < 1) ? 1 : $mins;
     }
@@ -108,4 +113,26 @@ class Post extends Model
 
         return ($isUrl) ? $this->image : Storage::disk('public')->url($this->image);
     }
+
+    //may should be removed...
+    // public function getSlugAttribute($value)
+    // {
+    //     return json_decode($value ?? '{}', true);
+    // }
+
+    public function getLocalizedTitleAttribute(): ?string
+    {
+        return $this->title[app()->getLocale()] ?? $this->title['en'] ?? null;
+    }
+    public function getLocalizedSlugAttribute()
+    {
+        return $this->slug[app()->getLocale()] ?? $this->slug['en'];
+    }
+
+    public function getLocalizedBodyAttribute(): string
+    {
+        $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
+        return strip_tags($body);
+    }
+
 }

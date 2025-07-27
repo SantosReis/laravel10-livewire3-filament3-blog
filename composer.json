@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.1",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-translatable-plugin": "^3.2",
         "flowframe/laravel-trend": "^0.3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -14,7 +15,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
-        "outhebox/blade-flags": "^1.5"
+        "outhebox/blade-flags": "^1.5",
+        "spatie/laravel-translatable": "^6.11"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

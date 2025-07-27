@@ -22,6 +22,9 @@ use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
+use Filament\Forms\Components\Tabs;
+use Closure;
+use Filament\Forms\Get;
 
 class PostResource extends Resource
 {
@@ -33,24 +36,62 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Main Content')->schema(
-                    [
-                        TextInput::make('title')
-                            ->live()
-                            ->required()->minLength(1)->maxLength(150)
-                            ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
-                                if ($operation === 'edit') {
-                                    return;
-                                }
+                Tabs::make('Translations')
+                    ->tabs(
+                        collect(config('app.supported_locales'))
+                            ->map(function ($locale, $code) {
+                                // return Tabs\Tab::make($locale['name'])
+                                return Tabs\Tab::make("{$locale['emoji']} {$locale['name']}")
+                                    // ->icon('flag-icon-' . $locale['icon']) // optional: needs a flag-icon setup
+                                    ->schema([
+                                        TextInput::make("title.$code")
+                                            ->label("Title ($code)")
+                                            ->live(onBlur: true)
+                                            ->required($code === 'en')
+                                            ->minLength(1)
+                                            ->maxLength(150)
+                                            ->afterStateUpdated(function (string $operation, $state, \Filament\Forms\Set $set) use ($code) {
+                                                if ($operation === 'edit') return;
+                                                $set("slug.$code", Str::slug($state));
+                                            }),
+                                        TextInput::make("slug.$code")
+                                            ->label("Slug ($code)")
+                                            ->required($code === 'en')
+                                            // ->required(false)
+                                            ->minLength(1)
+                                            ->maxLength(150)
+                                            ->rules([
+                                                function () use ($code) {
+                                                    $recordId = request()->route('record')?->getKey();
 
-                                $set('slug', Str::slug($state));
-                            }),
-                        TextInput::make('slug')->required()->minLength(1)->unique(ignoreRecord: true)->maxLength(150),
-                        RichEditor::make('body')
-                            ->required()
-                            ->fileAttachmentsDirectory('posts/images')->columnSpanFull()
-                    ]
-                )->columns(2),
+                                                    return function (string $attribute, $value, Closure $fail) use ($code, $recordId) {
+                                                        if (is_null($value) || $value === '') {
+                                                            return;
+                                                        }
+
+                                                        // $exists = Post::whereRaw(
+                                                        //         "JSON_UNQUOTE(JSON_EXTRACT(slug, '$.\"$code\"')) = ?",
+                                                        //         [$value]
+                                                        //     )
+                                                        //     ->when($recordId, fn ($query) => $query->where('id', '!=', $recordId))
+                                                        //     ->exists();
+
+                                                        // if ($exists) {
+                                                        //     $fail("The slug for '$code' must be unique.");
+                                                        // }
+                                                    };
+                                                }
+                                            ]),
+                                        RichEditor::make("body.$code")
+                                            ->label("Content ($code)")
+                                            ->required($code === 'en')
+                                            ->fileAttachmentsDirectory('posts/images')
+                                            ->columnSpanFull(),
+                                    ]);
+                            })
+                            ->toArray()
+                    )
+                    ->columnSpanFull(),
                 Section::make('Meta')->schema(
                     [
                         FileUpload::make('image')->image()->directory('posts/thumbnails'),
@@ -75,8 +116,10 @@ class PostResource extends Resource
             ->columns([
                 // Tables\Columns\TextColumn::make('user_id')->numeric()->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('slug')->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->getStateUsing(fn ($record) => $record->title[app()->getLocale()] ?? '—')
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('published_at')->dateTime()->sortable(),
                 // Tables\Columns\IconColumn::make('featured')->boolean(),
                 CheckboxColumn::make('featured'),
@@ -101,7 +144,7 @@ class PostResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn ($record) => url('/blog/' . $record->slug))
+                    // ->url(fn ($record) => url('/blog/' . $record->slug))
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => $record->published_at !== null),
             ])

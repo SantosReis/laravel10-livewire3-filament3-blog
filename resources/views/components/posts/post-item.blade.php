@@ -2,7 +2,7 @@
 <article {{ $attributes->merge(['class' => '[&:not(:last-child)]:border-b border-gray-100 pb-10']) }}>
     <div class="grid items-start grid-cols-12 gap-3 mt-5 article-body">
         <div class="flex items-center col-span-4 article-thumbnail">
-            <a wire:navigate href="{{ route('posts.show', $post->slug) }}" >
+            <a wire:navigate href="{{ route('posts.show', $post->localized_slug) }}" >
                 <img class="mx-auto mw-100 rounded-xl"
                     src="{{ $post->getThumbnailUrl() }}"
                     alt="thumbnail">
@@ -14,8 +14,8 @@
                 <span class="text-xs text-gray-500">. {{ $post->published_at->diffForHumans() }}</span>
             </div>
             <h2 class="text-xl font-bold text-gray-900">
-                <a  wire:navigate href="{{ route('posts.show', $post->slug) }}" >
-                    {{ $post->title }}
+                <a  wire:navigate href="{{ route('posts.show', $post->localized_slug) }}" >
+                    {{ $post->localized_title }}
                 </a>
             </h2>
 
