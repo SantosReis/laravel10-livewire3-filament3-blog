@@ -22,4 +22,14 @@ class EditCategory extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+
+        if (isset($data['slug']) && is_array($data['slug'])) {
+            $data['slug'] = array_filter($data['slug'], fn ($value) => !empty($value));
+        }
+
+        return $data;
+    }
 }

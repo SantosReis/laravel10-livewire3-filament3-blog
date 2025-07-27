@@ -104,6 +104,7 @@ class PostResource extends Resource
                         Select::make('categories')
                             ->multiple()
                             ->relationship('categories', 'title')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('title', app()->getLocale()))
                             ->searchable(),
                     ]
                 ),

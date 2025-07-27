@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use Filament\Forms\Components\Tabs;
+use Closure;
 
 class CategoryResource extends Resource
 {
@@ -24,17 +26,57 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->live()
-                    ->required()->minLength(1)->maxLength(150)
-                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
-                        if ($operation === 'edit') {
-                            return;
-                        }
-                        $set('slug', Str::slug($state));
-                    }),
-                Forms\Components\TextInput::make('slug')
-                    ->required()->minLength(1)->maxLength(150)->unique(ignoreRecord: true),
+                Tabs::make('Translations')
+                    ->tabs(
+                        collect(config('app.supported_locales'))
+                            ->map(function ($locale, $code) {
+                                // return Tabs\Tab::make($locale['name'])
+                                return Tabs\Tab::make("{$locale['emoji']} {$locale['name']}")
+                                    // ->icon('flag-icon-' . $locale['icon']) // optional: needs a flag-icon setup
+                                    ->schema([
+                                        Forms\Components\TextInput::make("title.$code")
+                                            ->label("Title ($code)")
+                                            ->live(onBlur: true)
+                                            ->required($code === 'en')
+                                            ->minLength(1)
+                                            ->maxLength(150)
+                                            ->afterStateUpdated(function (string $operation, $state, \Filament\Forms\Set $set) use ($code) {
+                                                if ($operation === 'edit') return;
+                                                $set("slug.$code", Str::slug($state));
+                                            }),
+                                        Forms\Components\TextInput::make("slug.$code")
+                                            ->label("Slug ($code)")
+                                            ->required($code === 'en')
+                                            // ->required(false)
+                                            ->minLength(1)
+                                            ->maxLength(150)
+                                            ->rules([
+                                                function () use ($code) {
+                                                    $recordId = request()->route('record')?->getKey();
+
+                                                    return function (string $attribute, $value, Closure $fail) use ($code, $recordId) {
+                                                        if (is_null($value) || $value === '') {
+                                                            return;
+                                                        }
+
+                                                        // $exists = Post::whereRaw(
+                                                        //         "JSON_UNQUOTE(JSON_EXTRACT(slug, '$.\"$code\"')) = ?",
+                                                        //         [$value]
+                                                        //     )
+                                                        //     ->when($recordId, fn ($query) => $query->where('id', '!=', $recordId))
+                                                        //     ->exists();
+
+                                                        // if ($exists) {
+                                                        //     $fail("The slug for '$code' must be unique.");
+                                                        // }
+                                                    };
+                                                }
+                                            ]),
+                                    ]);
+                            })
+                            ->toArray()
+                    )
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('text_color'),
                 Forms\Components\TextInput::make('bg_color'),
             ]);
