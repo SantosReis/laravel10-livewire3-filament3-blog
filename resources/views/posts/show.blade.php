@@ -10,19 +10,19 @@
         <div class="flex justify-between mt-6">
 
             @if ($previousPost)
-                <a href="{{ route('posts.show', $previousPost->localized_slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">←</a>
+                <a href="{{ route('posts.show', $previousPost->slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">←</a>
             @else
                 <span></span>
             @endif
 
             @if ($nextPost)
-                <a href="{{ route('posts.show', $nextPost->localized_slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">→</a>
+                <a href="{{ route('posts.show', $nextPost->slug) }}" class="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700">→</a>
             @endif
         </div>
 
         <div class="px-10 pt-10 pb-16">
             <h1 class="text-4xl font-medium text-left text-gray-800">
-                {{ $post->localized_title }}
+                {{ $post->title }}
             </h1>
             <div class="flex items-center justify-between mt-2">
                 <div class="flex items-center py-5">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="py-3 text-[13px] prose max-w-none text-left text-gray-950 article-content font-medium">
-                {!! $post->localized_body !!}
+                {!! $post->body !!}
             </div>
 
             {{-- <div class="flex items-center mt-10 space-x-4">

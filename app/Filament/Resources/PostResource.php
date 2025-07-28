@@ -117,9 +117,7 @@ class PostResource extends Resource
             ->columns([
                 // Tables\Columns\TextColumn::make('user_id')->numeric()->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('title')
-                    ->getStateUsing(fn ($record) => $record->title[app()->getLocale()] ?? '—')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 // Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('published_at')->dateTime()->sortable(),
                 // Tables\Columns\IconColumn::make('featured')->boolean(),
@@ -145,7 +143,7 @@ class PostResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn ($record) => url('/blog/' . $record->localized_slug))
+                    ->url(fn ($record) => url('/blog/' . $record->slug))
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => $record->published_at !== null),
             ])

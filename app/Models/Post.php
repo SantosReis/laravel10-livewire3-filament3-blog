@@ -15,6 +15,8 @@ class Post extends Model
 {
     use HasFactory, SoftDeletes, HasTranslations;
 
+    public $translatable = ['title', 'slug', 'body'];
+
     protected $fillable = [
         'user_id',
         'title',
@@ -34,16 +36,16 @@ class Post extends Model
 
     protected static function booted()
     {
-    static::saved(function () {
-        Cache::forget('featuredPosts');
-        Cache::forget('latestPosts');
-    });
+        static::saved(function () {
+            Cache::forget('featuredPosts');
+            Cache::forget('latestPosts');
+        });
 
-    static::deleted(function () {
-        Cache::forget('featuredPosts');
-        Cache::forget('latestPosts');
-    });
-}
+        static::deleted(function () {
+            Cache::forget('featuredPosts');
+            Cache::forget('latestPosts');
+        });
+    }
 
     public function author()
     {
@@ -95,14 +97,12 @@ class Post extends Model
 
     public function getExcerpt(): string
     {
-        $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
-        return Str::limit(strip_tags($body), 250);
+        return Str::limit(strip_tags($this->body), 250);
     }
 
     public function getReadingTime(): int
     {
-        $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
-        $mins = round(str_word_count(strip_tags($body)) / 250);
+        $mins = round(str_word_count(strip_tags($this->body)) / 250);
 
         return ($mins < 1) ? 1 : $mins;
     }
@@ -126,7 +126,7 @@ class Post extends Model
     }
     public function getLocalizedSlugAttribute()
     {
-        return $this->slug[app()->getLocale()] ?? $this->slug['en'];
+        return $this->slug[app()->getLocale()] ?? $this->slug['en'] ?? '';
     }
 
     public function getLocalizedBodyAttribute(): string

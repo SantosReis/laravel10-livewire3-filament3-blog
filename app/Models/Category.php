@@ -30,6 +30,6 @@ class Category extends Model
     }
     public function getLocalizedSlugAttribute()
     {
-        return $this->slug[app()->getLocale()] ?? $this->slug['en'];
+        return $this->slug[app()->getLocale()] ?? $this->slug['en'] ?? null;
     }
 }
