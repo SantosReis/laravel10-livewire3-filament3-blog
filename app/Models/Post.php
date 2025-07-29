@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, HasTranslations;
+    use HasFactory, SoftDeletes, HasTranslations, InteractsWithMedia;
 
     public $translatable = ['title', 'slug', 'body'];
 
@@ -21,7 +24,7 @@ class Post extends Model
         'user_id',
         'title',
         'slug',
-        'image',
+        // 'image',
         'body',
         'published_at',
         'featured',
@@ -107,18 +110,12 @@ class Post extends Model
         return ($mins < 1) ? 1 : $mins;
     }
 
-    public function getThumbnailUrl()
+    public function getThumbnailUrl(): ?string
     {
-        $isUrl = str_contains($this->image, 'http');
-
-        return ($isUrl) ? $this->image : Storage::disk('public')->url($this->image);
+        // $isUrl = str_contains($this->image, 'http');
+        // return ($isUrl) ? $this->image : Storage::disk('public')->url($this->image);
+        return $this->getFirstMediaUrl('posts', 'thumb') ?: null;
     }
-
-    //may should be removed...
-    // public function getSlugAttribute($value)
-    // {
-    //     return json_decode($value ?? '{}', true);
-    // }
 
     public function getLocalizedTitleAttribute(): ?string
     {
@@ -133,6 +130,21 @@ class Post extends Model
     {
         $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
         return strip_tags($body);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('posts')->singleFile();
+    }
+
+    // Optional: image size conversions
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10)
+            ->nonQueued(); // for quick local use
     }
 
 }

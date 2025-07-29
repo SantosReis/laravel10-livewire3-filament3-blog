@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
 use App\Models\Post;
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
@@ -21,10 +24,9 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
-use Filament\Forms\Components\Tabs;
-use Closure;
-use Filament\Forms\Get;
 
 class PostResource extends Resource
 {
@@ -94,7 +96,12 @@ class PostResource extends Resource
                     ->columnSpanFull(),
                 Section::make('Meta')->schema(
                     [
-                        FileUpload::make('image')->image()->directory('posts/thumbnails'),
+                        // FileUpload::make('image')->image()->directory('posts/thumbnails'),
+                        SpatieMediaLibraryFileUpload::make('image')
+                            ->collection('posts') // optional, allows separating media by collection
+                            ->image() // Only allow images
+                            ->multiple(false)
+                            ->responsiveImages(),
                         DateTimePicker::make('published_at')->nullable(),
                         Checkbox::make('featured'),
                         Select::make('user_id')
@@ -116,7 +123,10 @@ class PostResource extends Resource
         return $table
             ->columns([
                 // Tables\Columns\TextColumn::make('user_id')->numeric()->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
+                SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('posts')
+                    ->rounded(),
+                // Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 // Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\TextColumn::make('published_at')->dateTime()->sortable(),
