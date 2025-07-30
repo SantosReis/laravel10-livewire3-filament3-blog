@@ -15,6 +15,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Checkbox;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -113,6 +114,21 @@ class PostResource extends Resource
                             ->relationship('categories', 'title')
                             ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('title', app()->getLocale()))
                             ->searchable(),
+                        Select::make('tags')
+                            ->label('Tags')
+                            ->multiple()
+                            ->options(
+                                \Spatie\Tags\Tag::all()->pluck('name', 'id')->toArray()
+                            )
+                            ->searchable()
+                            ->dehydrated() // allow saving manually
+                            ->afterStateHydrated(function (Select $component, ?Model $record) {
+                                if ($record) {
+                                    $component->state(
+                                        $record->tags->pluck('id')->toArray()
+                                    );
+                                }
+                            })
                     ]
                 ),
             ]);

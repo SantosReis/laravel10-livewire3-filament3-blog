@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
-use App\Filament\Resources\PostResource;
+use App\Models\Post;
 use Filament\Actions;
+use App\Filament\Resources\PostResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreatePost extends CreateRecord
@@ -27,5 +28,23 @@ class CreatePost extends CreateRecord
 
 
         return $data;
+    }
+
+    protected function handleRecordCreation(array $data): Post
+    {
+        $tagIds = is_array($data['tags'] ?? null) ? $data['tags'] : [];
+        unset($data['tags']);
+
+        $locale = config('app.fallback_locale');
+
+        $tagNames = \Spatie\Tags\Tag::whereIn('id', $tagIds)
+            ->get()
+            ->map(fn ($tag) => $tag->getTranslation('name', $locale))
+            ->toArray();
+
+        $post = static::getModel()::create($data);
+        $post->syncTags($tagNames);
+
+        return $post;
     }
 }

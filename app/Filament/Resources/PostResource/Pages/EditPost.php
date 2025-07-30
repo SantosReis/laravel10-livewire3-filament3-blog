@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
-use App\Filament\Resources\PostResource;
+use App\Models\Post;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Pages\Actions\Action;
+use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\PostResource;
+use Filament\Resources\Pages\EditRecord;
 
 class EditPost extends EditRecord
 {
@@ -42,4 +44,21 @@ class EditPost extends EditRecord
 
         return $data;
     }
+
+    protected function handleRecordUpdate(Model $record, array $data): Post
+    {
+        $tagIds = $data['tags'] ?? [];
+        unset($data['tags']);
+
+        $tagNames = \Spatie\Tags\Tag::whereIn('id', $tagIds)
+            ->get()
+            ->map(fn ($tag) => $tag->getTranslation('name', config('app.fallback_locale')))
+            ->toArray();
+
+        $record->update($data);
+        $record->syncTags($tagNames);
+
+        return $record;
+    }
+
 }

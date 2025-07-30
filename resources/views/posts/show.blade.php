@@ -50,6 +50,14 @@
                 </div>
             </div>
 
+            <div class="flex flex-wrap gap-2">
+                @foreach ($post->tags as $tag)
+                    <span class="inline-block px-3 py-1 text-sm text-blue-800 bg-blue-100 rounded-full">
+                        {{ $tag->name ?? '' }}
+                    </span>
+                @endforeach
+            </div>
+
             <div class="py-3 text-[13px] prose max-w-none text-left text-gray-950 article-content font-medium">
                 {!! $post->body !!}
             </div>
