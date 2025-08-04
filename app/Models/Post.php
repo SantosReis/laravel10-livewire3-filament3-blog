@@ -115,7 +115,8 @@ class Post extends Model implements HasMedia
     {
         // $isUrl = str_contains($this->image, 'http');
         // return ($isUrl) ? $this->image : Storage::disk('public')->url($this->image);
-        return $this->getFirstMediaUrl('posts', 'thumb') ?: null;
+        // return $this->getFirstMediaUrl('posts', 'thumb') ?: null;
+        return $this->getFirstMediaUrl('posts', 'thumb') ?: asset('images/no-image.jpeg');
     }
 
     public function getLocalizedTitleAttribute(): ?string
