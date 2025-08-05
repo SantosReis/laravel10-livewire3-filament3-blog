@@ -1,0 +1,95 @@
+name: Test Application
+
+on:
+  push:
+    branches:
+      - itinerario
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        # os: [ubuntu-22.04, windows-2019]
+        # php: [8.1, 8.2, 8.3]
+        os: [ubuntu-22.04]
+        php: [8.2]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
+
+    # runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      # - name: Checkout skeleton code
+      #   uses: actions/checkout@v4
+      #   with:
+      #       path: 'skeleton'
+      #       repository: 'laravel/laravel'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 8.2
+          extensions: mbstring, dom, fileinfo, mysql, libxml, xml, xmlwriter, dom, tokenizer, filter, json, phar, pcre, openssl, pdo, intl, curl
+
+      # - uses: actions/checkout@v3
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Composer install
+        # run: composer install --no-dev --no-interaction --prefer-dist
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Generate key
+        run: php artisan key:generate --force
+
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Run Migrations
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        # run: php artisan migrate --force
+        run: php artisan migrate --seed --force
+
+      # - name: Compile CSS and Javascript
+      #   run: |
+      #       npm install
+      #       npm run dev
+      # Run npm tests
+      - name: Build and Test Node Packages
+        run: |
+          npm ci
+          npm run build
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Run Pint
+        run: ./vendor/bin/pint --test
+
+      # - name: Run Stan
+      #   run: ./vendor/bin/phpstan analyse
+
+      # - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+      #   env:
+      #       DB_CONNECTION: sqlite
+      #       DB_DATABASE: database/database.sqlite
+      #   run: php artisan test
+      # run: ./vendor/bin/phpunit
+      #run: vendor/bin/phpunit tests/
