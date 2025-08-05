@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,13 +23,12 @@ class DatabaseSeeder extends Seeder
         // Create Categories
         $categories = \App\Models\Category::factory(5)->create();
 
-
         $faker = Faker::create();
 
-        $tagNames = collect(range(1, 5))->map(fn() => $faker->unique()->word());
+        $tagNames = collect(range(1, 5))->map(fn () => $faker->unique()->word());
 
         $tagNames = ['Laravel', 'Vue', 'Livewire', 'Backend', 'Frontend'];
-        $tags = collect($tagNames)->map(fn($name) => \App\Models\Tag::findOrCreate($name));
+        $tags = collect($tagNames)->map(fn ($name) => \App\Models\Tag::findOrCreate($name));
 
         $users = \App\Models\User::factory(10)->create();
 

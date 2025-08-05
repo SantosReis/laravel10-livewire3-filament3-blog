@@ -3,10 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Post;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Rule;
-use Livewire\Attributes\Computed;
 
 class PostComments extends Component
 {
@@ -27,7 +27,7 @@ class PostComments extends Component
 
         $this->post->comments()->create([
             'comment' => $this->comment,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
 
         $this->reset('comment');

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Post;
 use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
@@ -20,8 +19,8 @@ class PostController extends Controller
 
         return view('posts.index',
             [
-            // 'posts' => Post::take(5)->get(),
-                'categories' => $categories
+                // 'posts' => Post::take(5)->get(),
+                'categories' => $categories,
             ]
         );
     }

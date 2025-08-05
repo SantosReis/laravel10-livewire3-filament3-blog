@@ -1,6 +1,5 @@
 <?php
 
-
 return [
 
     'featured_posts' => 'Featured Posts',
@@ -10,6 +9,6 @@ return [
     'hero' => [
         'title' => 'Welcome to',
         'desc' => 'Um itinerário anacrônico da história',
-        'cta' => 'Start Reading'
-    ]
+        'cta' => 'Start Reading',
+    ],
 ];

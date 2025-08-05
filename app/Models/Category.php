@@ -28,6 +28,7 @@ class Category extends Model
     {
         return $this->title[app()->getLocale()] ?? $this->title['en'] ?? null;
     }
+
     public function getLocalizedSlugAttribute()
     {
         return $this->slug[app()->getLocale()] ?? $this->slug['en'] ?? null;

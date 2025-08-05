@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +23,6 @@ Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('posts.sh
 
 // Route::get('/language/{locale}', HomeController::class)->name('locale');
 
-
 Route::get('/language/{locale}', function ($locale) {
     if (array_key_exists($locale, config('app.supported_locales'))) {
         session()->put('locale', $locale);
@@ -31,8 +30,6 @@ Route::get('/language/{locale}', function ($locale) {
 
     return redirect()->back();
 })->name('locale');
-
-
 
 Route::middleware([
     'auth:sanctum',

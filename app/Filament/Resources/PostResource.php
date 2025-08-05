@@ -2,32 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use Closure;
-use Filament\Forms;
+use App\Filament\Resources\PostResource\Pages;
+use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
 use App\Models\Post;
-use Filament\Tables;
-use Filament\Forms\Get;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Illuminate\Support\Str;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
+use Closure;
 use Filament\Forms\Components\Checkbox;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\CheckboxColumn;
-use Filament\Forms\Components\DateTimePicker;
-use App\Filament\Resources\PostResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\PostResource\RelationManagers;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class PostResource extends Resource
 {
@@ -54,7 +51,9 @@ class PostResource extends Resource
                                             ->minLength(1)
                                             ->maxLength(150)
                                             ->afterStateUpdated(function (string $operation, $state, \Filament\Forms\Set $set) use ($code) {
-                                                if ($operation === 'edit') return;
+                                                if ($operation === 'edit') {
+                                                    return;
+                                                }
                                                 $set("slug.$code", Str::slug($state));
                                             }),
                                         TextInput::make("slug.$code")
@@ -64,10 +63,10 @@ class PostResource extends Resource
                                             ->minLength(1)
                                             ->maxLength(150)
                                             ->rules([
-                                                function () use ($code) {
+                                                function () {
                                                     $recordId = request()->route('record')?->getKey();
 
-                                                    return function (string $attribute, $value, Closure $fail) use ($code, $recordId) {
+                                                    return function (string $attribute, $value, Closure $fail) {
                                                         if (is_null($value) || $value === '') {
                                                             return;
                                                         }
@@ -83,7 +82,7 @@ class PostResource extends Resource
                                                         //     $fail("The slug for '$code' must be unique.");
                                                         // }
                                                     };
-                                                }
+                                                },
                                             ]),
                                         RichEditor::make("body.$code")
                                             ->label("Content ($code)")
@@ -128,7 +127,7 @@ class PostResource extends Resource
                                         $record->tags->pluck('id')->toArray()
                                     );
                                 }
-                            })
+                            }),
                     ]
                 ),
             ]);
@@ -169,7 +168,7 @@ class PostResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn ($record) => url('/blog/' . $record->slug))
+                    ->url(fn ($record) => url('/blog/'.$record->slug))
                     ->openUrlInNewTab()
                     ->visible(fn ($record) => $record->published_at !== null),
             ])
@@ -185,7 +184,7 @@ class PostResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CommentsRelationManager::class
+            CommentsRelationManager::class,
         ];
     }
 

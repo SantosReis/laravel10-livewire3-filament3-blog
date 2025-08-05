@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Models\Post;
-use Livewire\Component;
 use App\Models\Category;
+use App\Models\Post;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Computed;
 
 class PostList extends Component
 {
@@ -46,7 +46,8 @@ class PostList extends Component
     }
 
     #[Computed()]
-    public function posts(){
+    public function posts()
+    {
         return Post::published()
             ->with('author', 'categories')
             // ->when(Category::where('slug', $this->category)->first(), function ($query) {

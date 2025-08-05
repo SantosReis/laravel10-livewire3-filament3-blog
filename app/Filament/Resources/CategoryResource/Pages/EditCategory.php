@@ -4,8 +4,8 @@ namespace App\Filament\Resources\CategoryResource\Pages;
 
 use App\Filament\Resources\CategoryResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Pages\Actions\Action;
+use Filament\Resources\Pages\EditRecord;
 
 class EditCategory extends EditRecord
 {
@@ -17,7 +17,7 @@ class EditCategory extends EditRecord
             Action::make('view')
                 ->label('View Post')
                 ->icon('heroicon-o-arrow-top-right-on-square')
-                ->url(fn () => url('/blog?category=' . $this->record->slug))
+                ->url(fn () => url('/blog?category='.$this->record->slug))
                 ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
         ];
@@ -27,7 +27,7 @@ class EditCategory extends EditRecord
     {
 
         if (isset($data['slug']) && is_array($data['slug'])) {
-            $data['slug'] = array_filter($data['slug'], fn ($value) => !empty($value));
+            $data['slug'] = array_filter($data['slug'], fn ($value) => ! empty($value));
         }
 
         return $data;

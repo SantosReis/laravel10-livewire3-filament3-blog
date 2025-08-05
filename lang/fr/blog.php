@@ -10,5 +10,5 @@ return [
 
     'search' => 'Recherche',
     'search_placeholder' => 'Recherche ...',
-    'recommended_topics' => 'Sujets recommandés'
+    'recommended_topics' => 'Sujets recommandés',
 ];

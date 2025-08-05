@@ -1,6 +1,5 @@
 <?php
 
-
 return [
 
     'featured_posts' => 'Postes en vedette',
@@ -10,6 +9,6 @@ return [
     'hero' => [
         'title' => 'Bienvenue à',
         'desc' => "Meilleur blog de l'univers",
-        'cta' => 'Commencer la lecture'
-    ]
+        'cta' => 'Commencer la lecture',
+    ],
 ];

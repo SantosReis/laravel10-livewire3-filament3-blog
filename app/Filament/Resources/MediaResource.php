@@ -2,18 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\MediaResource\Pages;
 use Filament\Forms;
-use Filament\Tables;
 // use App\Models\Media;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\MediaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Filament\Resources\MediaResource\RelationManagers;
 
 class MediaResource extends Resource
 {
@@ -29,7 +26,7 @@ class MediaResource extends Resource
                 Forms\Components\Placeholder::make('preview')
                     ->label('Preview')
                     ->visible(fn ($record) => $record && $record->getUrl())
-                    ->content(fn ($record) => new HtmlString('<img src="' . e($record->getUrl()) . '" style="max-width: 200px; max-height: 200px; border-radius: 8px;" />')),
+                    ->content(fn ($record) => new HtmlString('<img src="'.e($record->getUrl()).'" style="max-width: 200px; max-height: 200px; border-radius: 8px;" />')),
                 // Forms\Components\FileUpload::make('file') // optional, replace media file
                 //     ->label('Upload New File')
                 //     ->directory('media')
@@ -61,7 +58,7 @@ class MediaResource extends Resource
 
                 Tables\Columns\TextColumn::make('size')
                     ->label('Size')
-                    ->formatStateUsing(fn ($state) => number_format($state / 1024, 2) . ' KB'),
+                    ->formatStateUsing(fn ($state) => number_format($state / 1024, 2).' KB'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Uploaded')

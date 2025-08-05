@@ -11,5 +11,5 @@ return [
     'search' => 'Search',
     'search_placeholder' => 'Search ...',
     'recommended_topics' => 'Recommended Topics',
-    'min_read' => 'Min read'
+    'min_read' => 'Min read',
 ];

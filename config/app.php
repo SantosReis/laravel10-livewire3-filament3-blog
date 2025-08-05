@@ -120,7 +120,6 @@ return [
             'icon' => 'de',
         ],
 
-
         // 'en' => ['name' => 'English', 'icon' => 'us'],
         // 'pt' => ['name' => 'Português', 'icon' => 'pt'],
         // 'fr' => ['name' => 'Français', 'icon' => 'fr'],

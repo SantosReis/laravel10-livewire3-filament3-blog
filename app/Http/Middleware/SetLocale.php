@@ -18,6 +18,7 @@ class SetLocale
         if (session()->has('locale') && array_key_exists(session('locale'), config('app.supported_locales'))) {
             app()->setLocale(session('locale'));
         }
+
         return $next($request);
     }
 }

@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
-use Spatie\Tags\HasTags;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Translatable\HasTranslations;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Tags\HasTags;
+use Spatie\Translatable\HasTranslations;
 
 class Post extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, HasTranslations, InteractsWithMedia, HasTags;
+    use HasFactory, HasTags, HasTranslations, InteractsWithMedia, SoftDeletes;
 
     public $translatable = ['title', 'slug', 'body'];
 
@@ -91,7 +91,7 @@ class Post extends Model implements HasMedia
     public function scopePopular($query)
     {
         $query->withCount('likes')
-            ->orderBy("likes_count", 'desc');
+            ->orderBy('likes_count', 'desc');
     }
 
     public function scopeSearch($query, string $search = '')
@@ -123,6 +123,7 @@ class Post extends Model implements HasMedia
     {
         return $this->title[app()->getLocale()] ?? $this->title['en'] ?? null;
     }
+
     public function getLocalizedSlugAttribute()
     {
         return $this->slug[app()->getLocale()] ?? $this->slug['en'] ?? '';
@@ -131,6 +132,7 @@ class Post extends Model implements HasMedia
     public function getLocalizedBodyAttribute(): string
     {
         $body = $this->body[app()->getLocale()] ?? $this->body['en'] ?? '';
+
         return strip_tags($body);
     }
 
@@ -140,7 +142,7 @@ class Post extends Model implements HasMedia
     }
 
     // Optional: image size conversions
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(300)
@@ -148,5 +150,4 @@ class Post extends Model implements HasMedia
             ->sharpen(10)
             ->nonQueued(); // for quick local use
     }
-
 }

@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
-use Filament\Actions;
 use App\Filament\Resources\PostResource;
-use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\PostResource\Widgets\PostsPerMonthChart;
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
 
 class ListPosts extends ListRecords
 {

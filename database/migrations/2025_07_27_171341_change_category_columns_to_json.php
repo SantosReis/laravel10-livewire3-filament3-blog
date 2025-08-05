@@ -35,7 +35,7 @@ return new class extends Migration
     {
         echo "\n Reverting JSON columns and re-adding slug column...\n";
 
-         Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             $table->string('title', 255)->change();
             $table->dropColumn('slug');
         });

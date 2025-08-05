@@ -2,19 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
+use Closure;
+use Filament\Forms;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CategoryResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use Filament\Forms\Components\Tabs;
-use Closure;
 
 class CategoryResource extends Resource
 {
@@ -41,7 +38,9 @@ class CategoryResource extends Resource
                                             ->minLength(1)
                                             ->maxLength(150)
                                             ->afterStateUpdated(function (string $operation, $state, \Filament\Forms\Set $set) use ($code) {
-                                                if ($operation === 'edit') return;
+                                                if ($operation === 'edit') {
+                                                    return;
+                                                }
                                                 $set("slug.$code", Str::slug($state));
                                             }),
                                         Forms\Components\TextInput::make("slug.$code")
@@ -51,10 +50,10 @@ class CategoryResource extends Resource
                                             ->minLength(1)
                                             ->maxLength(150)
                                             ->rules([
-                                                function () use ($code) {
+                                                function () {
                                                     $recordId = request()->route('record')?->getKey();
 
-                                                    return function (string $attribute, $value, Closure $fail) use ($code, $recordId) {
+                                                    return function (string $attribute, $value, Closure $fail) {
                                                         if (is_null($value) || $value === '') {
                                                             return;
                                                         }
@@ -70,7 +69,7 @@ class CategoryResource extends Resource
                                                         //     $fail("The slug for '$code' must be unique.");
                                                         // }
                                                     };
-                                                }
+                                                },
                                             ]),
                                     ]);
                             })
@@ -107,7 +106,7 @@ class CategoryResource extends Resource
                 Tables\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn ($record) => url('/blog?category=' . $record->slug))
+                    ->url(fn ($record) => url('/blog?category='.$record->slug))
                     ->openUrlInNewTab(),
             ])
             ->bulkActions([

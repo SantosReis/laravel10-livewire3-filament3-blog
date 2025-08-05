@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\CategoryResource\Pages;
 
 use App\Filament\Resources\CategoryResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCategory extends CreateRecord
@@ -14,7 +13,7 @@ class CreateCategory extends CreateRecord
     {
 
         if (isset($data['slug']) && is_array($data['slug'])) {
-            $data['slug'] = array_filter($data['slug'], fn ($value) => !empty($value));
+            $data['slug'] = array_filter($data['slug'], fn ($value) => ! empty($value));
         }
 
         return $data;

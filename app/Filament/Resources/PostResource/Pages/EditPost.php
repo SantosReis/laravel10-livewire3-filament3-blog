@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\PostResource\Pages;
 
+use App\Filament\Resources\PostResource;
 use App\Models\Post;
 use Filament\Actions;
 use Filament\Pages\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
-use App\Filament\Resources\PostResource;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditPost extends EditRecord
 {
@@ -20,7 +20,7 @@ class EditPost extends EditRecord
                 ->label('View Post')
                 ->icon('heroicon-o-arrow-top-right-on-square')
                 // ->url(fn () => url('/blog/' . $this->record->slug))
-                ->url(fn () => url('/blog/' . ($this->record->slug['en'] ?? '')))
+                ->url(fn () => url('/blog/'.($this->record->slug['en'] ?? '')))
                 ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
@@ -39,7 +39,7 @@ class EditPost extends EditRecord
         // }
 
         if (isset($data['slug']) && is_array($data['slug'])) {
-            $data['slug'] = array_filter($data['slug'], fn ($value) => !empty($value));
+            $data['slug'] = array_filter($data['slug'], fn ($value) => ! empty($value));
         }
 
         return $data;
@@ -60,5 +60,4 @@ class EditPost extends EditRecord
 
         return $record;
     }
-
 }
