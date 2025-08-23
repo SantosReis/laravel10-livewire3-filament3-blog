@@ -31,7 +31,8 @@ class UserResource extends Resource
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required(fn ($livewire) => $livewire instanceof \App\Filament\Resources\UserResource\Pages\CreateUser)
+                    ->dehydrated(fn ($state) => filled($state)),
                 // Forms\Components\TextInput::make('current_team_id')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('profile_photo_path'),
