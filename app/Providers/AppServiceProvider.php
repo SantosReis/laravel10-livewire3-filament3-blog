@@ -21,8 +21,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Model::shouldBeStrict();
-        // Model::shouldBeStrict($this->app->isProduction());
-        // DB::prohibitDestructiveCommands($this->app->isProduction());
+        Model::shouldBeStrict();
+        Model::shouldBeStrict($this->app->isProduction());
+        // DB::prohibitDestructiveCommands($this->app->isProduction()); //laravel 11+
+
+        if ($this->app->environment('production')) {
+            if (app()->runningUnitTests() || app()->runningInConsole() && in_array('test', request()->server('argv', []))) {
+                exit("Tests are disabled in production environment.\n");
+            }
+        }
+
     }
 }
