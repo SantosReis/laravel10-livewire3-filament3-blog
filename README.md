@@ -97,6 +97,32 @@ npm run dev
 npm run build
 ```
 
+## Backups
+
+### Run a backup manually
+
+php artisan backup:run
+
+### Run backup of only database
+
+php artisan backup:run --only-db
+
+### Run backup of only files
+
+php artisan backup:run --only-files
+
+### List all backups
+
+php artisan backup:list
+
+### Clean old backups
+
+php artisan backup:clean
+
+### Monitor backup health
+
+php artisan backup:monitor
+
 ## License
 
 This project is open-source and available under the MIT License.
