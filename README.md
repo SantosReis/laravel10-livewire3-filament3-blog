@@ -39,6 +39,16 @@ docker-compose exec app php artisan migrate --seed
 # Done! Visit: http://localhost
 ```
 
+## Reset
+
+```
+php artisan db:wipe
+php artisan migrate:fresh --seed # if you want a clean schema with seeders
+
+rm -rf storage/app/public/*
+rm -rf storage/logs/*.log
+```
+
 ## Database
 
 The .env is pre-configured for Docker containers:
@@ -92,9 +102,9 @@ This app uses a modern Laravel/Livewire+Vite+Tailwind stack.
 ```
 npm install
 
-npm run dev
+npm run dev #run dev mode
 
-npm run build
+npm run build #build files
 ```
 
 ## Backups

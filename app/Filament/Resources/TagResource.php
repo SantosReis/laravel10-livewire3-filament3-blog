@@ -20,6 +20,8 @@ class TagResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
     public static function getModel(): string
     {
         return \App\Models\Tag::class;
