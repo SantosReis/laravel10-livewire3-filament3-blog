@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Filament\Pages\ManageBackup;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,12 @@ Route::get('/language/{locale}', function ($locale) {
 
     return redirect()->back();
 })->name('locale');
+
+
+Route::get('/admin/backup/download/{filename}', [ManageBackup::class, 'downloadBackup'])
+    ->name('filament.admin.pages.manage-backup.download')
+    ->middleware('auth');
+
 
 Route::middleware([
     'auth:sanctum',
