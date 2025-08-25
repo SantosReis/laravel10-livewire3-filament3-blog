@@ -8,29 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens;
-    use HasFactory;
-    use Notifiable;
-
-    const ROLE_ADMIN = 'ADMIN';
-    const ROLE_EDITOR = 'EDITOR';
-    const ROLE_USER = 'USER';
-    const ROLE_DEFAULT = self::ROLE_USER;
-
-    const ROLES = [
-        self::ROLE_ADMIN => 'Admin',
-        self::ROLE_EDITOR => 'Editor',
-        self::ROLE_USER => 'User',
-    ];
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role',
     ];
 
     protected $hidden = [
@@ -45,17 +32,7 @@ class User extends Authenticatable implements FilamentUser
     // Filament admin panel access
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->can('view-admin', User::class);
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
-    public function isEditor(): bool
-    {
-        return $this->role === self::ROLE_EDITOR;
+        return $this->hasAnyRole(['Admin', 'Editor']);
     }
 
     // Relations

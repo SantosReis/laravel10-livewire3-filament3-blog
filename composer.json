@@ -25,6 +25,7 @@
     "spatie/laravel-backup": "^9.3",
     "spatie/laravel-data": "^4.17",
     "spatie/laravel-medialibrary": "^11.13",
+    "spatie/laravel-permission": "^6.21",
     "spatie/laravel-settings": "^3.4",
     "spatie/laravel-tags": "^4.10",
     "spatie/laravel-translatable": "^6.11"

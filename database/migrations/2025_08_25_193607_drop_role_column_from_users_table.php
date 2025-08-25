@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('team_invitations');
-        Schema::dropIfExists('team_user');
-        Schema::dropIfExists('teams');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+
+        });
     }
 
     /**
@@ -21,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->nullable();
+        });
     }
 };
