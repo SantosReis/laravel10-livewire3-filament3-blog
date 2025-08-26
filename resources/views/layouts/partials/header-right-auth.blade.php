@@ -1,55 +1,45 @@
-<!-- Settings Dropdown -->
-<div class="relative flex ml-3 space-x-4">
-    @can('view-admin', App\Models\User::class)
-        <x-nav-link :navigate='false' href="{{ route('filament.admin.auth.login') }}" :active="request()->routeIs('filament.admin.auth.login')">
-            {{ __('menu.admin') }}
-        </x-nav-link>
-    @endcan
-    <x-dropdown align="right" width="48">
-        <x-slot name="trigger">
-            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                <button class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
-                    <img class="object-cover w-8 h-8 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+<nav class="flex items-center justify-between px-6 py-3 border-b border-gray-100 dark:border-gray-700 dark:bg-gray-900">
+    {{-- Right side --}}
+    <div class="flex items-center space-x-4">
+        @auth
+
+            <div x-data="{ open: false }" class="relative inline-block text-left">
+                <button @click="open = !open"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white border border-transparent rounded-md dark:text-gray-300 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring focus:ring-indigo-500">
+                    {{ auth()->user()->name }}
+                    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                    </svg>
                 </button>
-            @else
-                <span class="inline-flex rounded-md">
-                    <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700">
-                        {{ Auth::user()->name }}
 
-                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </button>
-                </span>
-            @endif
-        </x-slot>
-
-        <x-slot name="content">
-            <!-- Account Management -->
-            <div class="block px-4 py-2 text-xs text-gray-400">
-                {{ __('menu.manage_account') }}
+                {{-- Dropdown --}}
+                <div x-show="open" @click.away="open = false"
+                    class="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700"
+                    x-transition>
+                    <a href="{{ route('profile.edit') }}"
+                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        {{ __('menu.profile') }}
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                                class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {{ __('menu.logout') }}
+                        </button>
+                    </form>
+                </div>
             </div>
 
-            <x-dropdown-link wire:navigate href="{{ route('profile.show') }}">
-                {{ __('menu.profile') }}
-            </x-dropdown-link>
-
-            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                <x-dropdown-link wire:navigate href="{{ route('api-tokens.index') }}">
-                    {{ __('menu.api-tokens') }}
-                </x-dropdown-link>
-            @endif
-
-            <div class="border-t border-gray-200 dark:border-gray-600"></div>
-
-            <!-- Authentication -->
-            <form method="POST" action="{{ route('logout') }}" x-data>
-                @csrf
-
-                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                    {{ __('menu.logout') }}
-                </x-dropdown-link>
-            </form>
-        </x-slot>
-    </x-dropdown>
-</div>
+        @else
+            <a href="{{ route('login') }}"
+               class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                {{ __('menu.login') }}
+            </a>
+            <a href="{{ route('register') }}"
+               class="ml-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                {{ __('menu.register') }}
+            </a>
+        @endauth
+    </div>
+</nav>

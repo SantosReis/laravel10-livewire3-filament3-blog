@@ -1,3 +1,4 @@
 <header class="bg-white">
-    <livewire:navigation-menu />
+    {{-- <livewire:navigation-menu /> --}}
+    @include('navigation-menu')
 </header>

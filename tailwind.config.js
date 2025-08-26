@@ -6,7 +6,7 @@ import typography from '@tailwindcss/typography'
 export default {
   content: [
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-    './vendor/laravel/jetstream/**/*.blade.php',
+    './vendor/livewire/flux/**/*.blade.php',
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php'
   ],
@@ -20,6 +20,5 @@ export default {
   },
 
   plugins: [forms, typography],
-  darkMode: 'class',
   darkMode: 'class'
 }
