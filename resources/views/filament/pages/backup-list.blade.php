@@ -8,34 +8,34 @@
             <p class="mt-1 text-sm text-gray-400">Create your first backup using the actions above.</p>
         </div>
     @else
-        <div class="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg dark:border-gray-700 dark:bg-gray-900">
-            <table class="w-full min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-800">
+        <div class="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg">
+            <table class="w-full min-w-full divide-y divide-gray-200 table-fixed">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-gray-300">
+                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase">
                             Backup File
                         </th>
-                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-gray-300">
+                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase">
                             Size
                         </th>
-                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-gray-300">
+                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase">
                             Date Created
                         </th>
-                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-right text-gray-500 uppercase dark:text-gray-300">
+                        <th class="px-6 py-3 text-xs font-semibold tracking-wider text-right text-gray-500 uppercase">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody class="divide-y divide-gray-200">
                     @forelse($backups as $backup)
-                        <tr class="w-full transition-colors duration-150 bg-white dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-gray-100">
+                        <tr class="w-full transition-colors duration-150 bg-white hover:bg-gray-200">
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                 {{ $backup['name'] }}
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 {{ $backup['size'] }}
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                 {{ $backup['date'] }}
                             </td>
                             <td class="px-6 py-4 text-right whitespace-nowrap">
@@ -47,7 +47,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
                                 No backups available. Use the actions above to create one.
                             </td>
                         </tr>

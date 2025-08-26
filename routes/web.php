@@ -16,6 +16,16 @@ use App\Filament\Pages\ManageBackup;
 |
 */
 
+Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+require __DIR__.'/auth.php';
+
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/blog', [PostController::class, 'index'])->name('posts.index');
@@ -43,3 +53,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ]);
+
+

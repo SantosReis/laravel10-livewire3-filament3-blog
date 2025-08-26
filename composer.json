@@ -20,8 +20,8 @@
     "laravel/sanctum": "^4.0",
     "laravel/tinker": "^2.8",
     "livewire/flux": "^2.2",
-    "livewire/livewire": "^3.0",
-    "livewire/volt": "^1.7",
+    "livewire/livewire": "^3.6.4",
+    "livewire/volt": "^1.7.0",
     "opcodesio/log-viewer": "^3.19",
     "outhebox/blade-flags": "^1.5",
     "spatie/laravel-backup": "^9.3",
@@ -35,6 +35,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.14",
     "fakerphp/faker": "^1.9.1",
+    "laravel/breeze": "^2.3",
     "laravel/pint": "^1.0",
     "laravel/sail": "^1.18",
     "mockery/mockery": "^1.4.4",
