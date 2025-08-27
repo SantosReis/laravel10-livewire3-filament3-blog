@@ -32,6 +32,7 @@
         @endforelse
     </div>
     <div class="my-2">
-        {{ $this->comments->links() }}
+        {{-- {{ $this->comments->links() }} --}}
+        {{ $this->comments->links('vendor.pagination.custom') }}
     </div>
 </div>

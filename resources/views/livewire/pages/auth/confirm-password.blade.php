@@ -5,7 +5,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new #[Layout('layouts.app')] class extends Component
 {
     public string $password = '';
 
@@ -33,7 +33,7 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
+<div class="w-full p-10 mx-auto bg-white shadow-xl my-28 md:w-1/2 lg:w-1/3">
     <div class="mb-4 text-sm text-gray-600">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
@@ -45,7 +45,7 @@ new #[Layout('layouts.guest')] class extends Component
 
             <x-text-input wire:model="password"
                           id="password"
-                          class="block mt-1 w-full"
+                          class="block w-full mt-1"
                           type="password"
                           name="password"
                           required autocomplete="current-password" />

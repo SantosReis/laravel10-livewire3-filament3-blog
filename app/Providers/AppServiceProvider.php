@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
                 exit("Tests are disabled in production environment.\n");
             }
         }
+
+        // Paginator::defaultView('vendor.pagination.custom');
+        Paginator::defaultView('vendor.pagination.custom'); // for regular links
+        Paginator::defaultSimpleView('vendor.pagination.custom'); // for simple links
 
     }
 }
