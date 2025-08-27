@@ -1,9 +1,10 @@
 <?php
 
+use App\Filament\Pages\ManageBackup;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
-use Illuminate\Support\Facades\Route;
-use App\Filament\Pages\ManageBackup;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +17,31 @@ use App\Filament\Pages\ManageBackup;
 |
 */
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+Route::get('/dashboard', function () {
+    return redirect('/'); // send to home instead
+})->name('dashboard');
+
+
+// Route::view('profile', 'profile')
+//     ->middleware(['auth'])
+//     ->name('profile');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/');
+})->name('logout')->middleware('auth');
 
 require __DIR__.'/auth.php';
 
