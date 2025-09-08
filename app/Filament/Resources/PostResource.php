@@ -112,8 +112,11 @@ class PostResource extends Resource
                             ->required(),
                         Select::make('categories')
                             ->multiple()
-                            ->relationship('categories', 'title')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('title', app()->getLocale()))
+                            ->relationship('categories') // only the relationship, no column
+                            ->getOptionLabelFromRecordUsing(
+                                fn ($record) => $record->getTranslation('title', app()->getLocale())
+                            )
+                            ->preload() // optional, loads all categories for faster search
                             ->searchable(),
                         Select::make('tags')
                             ->label('Tags')

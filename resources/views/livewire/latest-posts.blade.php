@@ -25,7 +25,7 @@
     </div>
 
     <!-- Load More button -->
-    @if ($posts->hasMorePages())
+    {{-- @if ($posts->hasMorePages())
         <div class="mt-6 text-center">
             <button
                 wire:click="loadMore"
@@ -35,5 +35,32 @@
                 {{ __('home.more_posts') }}
             </button>
         </div>
+    @endif --}}
+
+    {{-- <div class="mt-6 text-center">
+        {{ $posts->links('pagination::tailwind') }}
+    </div> --}}
+
+<div class="flex justify-between mt-6">
+    {{-- Previous Page Link --}}
+    @if ($posts->onFirstPage())
+        <span class="px-4 py-2 text-gray-600 bg-gray-300 rounded cursor-not-allowed">Previous</span>
+    @else
+        <a href="{{ $posts->previousPageUrl() }}"
+           class="px-4 py-2 text-white bg-gray-700 rounded hover:bg-gray-800">
+           Previous
+        </a>
     @endif
+
+    {{-- Next Page Link --}}
+    @if ($posts->hasMorePages())
+        <a href="{{ $posts->nextPageUrl() }}"
+           class="px-4 py-2 text-white bg-gray-700 rounded hover:bg-gray-800">
+           Next
+        </a>
+    @else
+        <span class="px-4 py-2 text-gray-600 bg-gray-300 rounded cursor-not-allowed">Next</span>
+    @endif
+</div>
+
 </div>
